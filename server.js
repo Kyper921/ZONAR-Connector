@@ -73,7 +73,7 @@ fastify.post('/tools/call', async (req, reply) => {
   }
 });
 
-fastify.listen({ port: 3333 }, (err) => {
+fastify.listen({ port: process.env.PORT || 3333, host: '0.0.0.0' }, (err) => {
   if (err) throw err;
   console.log('MCP server running on http://localhost:3333');
 });
