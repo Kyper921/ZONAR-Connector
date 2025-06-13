@@ -5,8 +5,9 @@ const fetchNode = (...a) => import('node-fetch').then(({default: f}) => f(...a))
 const { parseStringPromise } = require('xml2js');
 
 // Root route for health checks
-fastify.get('/', async (request, reply) => {
-  return { status: 'ok', message: 'ZONAR Connector is running.' };
+fastify.get('/', (request, reply) => {
+  console.log(`[${new Date().toISOString()}] Received health check request for / from IP: ${request.ip}`);
+  reply.send({ status: 'ok', message: 'ZONAR Connector is running.' });
 });
 
 // Let ChatGPT discover your tools
