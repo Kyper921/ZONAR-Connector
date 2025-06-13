@@ -1,6 +1,6 @@
 // Simple MCP → Zonar bridge
 require('dotenv').config();
-const fastify = require('fastify')();
+const fastify = require('fastify')({ trustProxy: true }); // Enabled trustProxy
 const fetchNode = (...a) => import('node-fetch').then(({default: f}) => f(...a));
 const { parseStringPromise } = require('xml2js');
 
