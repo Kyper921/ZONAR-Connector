@@ -10,33 +10,41 @@ fastify.get('/', async (request, reply) => {
 });
 
 // Let ChatGPT discover your tools
-fastify.get('/tools/list', (_, reply) => {
-  reply.send({
-    tools: [
-      {
-        name: "get_bus_location",
-        description: "Returns the latest GPS location, speed, and timestamp for a specific bus by its fleet ID.",
-        input_schema: {
-          type: "object",
-          properties: {
-            bus_id: { type: "string", description: "The fleet ID of the bus." }
+fastify.get('/tools/list', (request, reply) => {
+  console.log(`[${new Date().toISOString()}] Received request for /tools/list from IP: ${request.ip}`);
+  try {
+    const toolData = {
+      tools: [
+        {
+          name: "get_bus_location",
+          description: "Returns the latest GPS location, speed, and timestamp for a specific bus by its fleet ID.",
+          input_schema: {
+            type: "object",
+            properties: {
+              bus_id: { type: "string", description: "The fleet ID of the bus." }
+            },
+            required: ["bus_id"]
           },
-          required: ["bus_id"]
-        },
-        output_schema: {
-          type: "object",
-          properties: {
-            latitude: { type: "number", description: "Latitude of the bus." },
-            longitude: { type: "number", description: "Longitude of the bus." },
-            speed: { type: "number", description: "Speed of the bus." }, // Unit depends on Zonar data, assumed MPH or similar
-            timestamp_unix: { type: "string", description: "GPS fix timestamp (Unix epoch seconds)." },
-            timestamp_readable: { type: "string", description: "GPS fix timestamp (human-readable)." }
-          },
-          required: ["latitude", "longitude", "speed", "timestamp_unix", "timestamp_readable"]
+          output_schema: {
+            type: "object",
+            properties: {
+              latitude: { type: "number", description: "Latitude of the bus." },
+              longitude: { type: "number", description: "Longitude of the bus." },
+              speed: { type: "number", description: "Speed of the bus." }, // Unit depends on Zonar data, assumed MPH or similar
+              timestamp_unix: { type: "string", description: "GPS fix timestamp (Unix epoch seconds)." },
+              timestamp_readable: { type: "string", description: "GPS fix timestamp (human-readable)." }
+            },
+            required: ["latitude", "longitude", "speed", "timestamp_unix", "timestamp_readable"]
+          }
         }
-      }
-    ]
-  });
+      ]
+    };
+    console.log(`[${new Date().toISOString()}] Attempting to send /tools/list response.`);
+    reply.send(toolData);
+  } catch (error) {
+    console.error(`[${new Date().toISOString()}] !!! Critical error in /tools/list handler:`, error);
+    reply.status(500).send({ error: 'Internal server error in /tools/list', details: error.message });
+  }
 });
 
 // Handle the actual call
