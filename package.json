@@ -1,0 +1,27 @@
+{
+  "name": "zonar-connector",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kyper921/ZONAR-Connector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kyper921/ZONAR-Connector/issues"
+  },
+  "homepage": "https://github.com/Kyper921/ZONAR-Connector#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "fastify": "^5.4.0",
+    "node-fetch": "^3.3.2",
+    "xml2js": "^0.6.2"
+  }
+}
